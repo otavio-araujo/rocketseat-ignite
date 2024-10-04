@@ -1,7 +1,10 @@
 import { useState } from "react"
+import { Alert } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 
 import { groupCreate } from "@/storage/group/groupCreate"
+
+import { AppError } from "@/utils/AppError"
 
 import { Input } from "@/components/Input"
 import { Button } from "@/components/Button"
@@ -16,9 +19,22 @@ export function NewGroup() {
   const navigation = useNavigation()
 
   async function handleNew() {
+    if (group.trim().length === 0 || group.trim().length < 3) {
+      return Alert.alert(
+        "Nova Turma",
+        "Por favor, informe um nome para a turma com pelo menos 3 caracteres."
+      )
+    }
+
     try {
       await groupCreate(group)
     } catch (error) {
+      if (error instanceof AppError) {
+        Alert.alert("Nova Turma", error.message)
+        return
+      }
+
+      Alert.alert("Novo Turma", "Não foi possível criar um novo turma")
       console.log(error)
     }
     navigation.navigate("players", { group })
