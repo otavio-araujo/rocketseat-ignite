@@ -11,9 +11,13 @@ import { Highlight } from "@/components/Highlight"
 import { ButtonIcon } from "@/components/ButtonIcon"
 import { PlayerCard } from "@/components/PlayerCard"
 
-import { Container, Form, HeaderList, NumberOfPlayers } from "./styles"
 import { AppError } from "@/utils/AppError"
+
 import { playerAddByGroup } from "@/storage/player/playerAddByGroup"
+import { PlayerStorageDTO } from "@/storage/player/PlayerStorageDTO"
+import { playerGetByGroupAndTeam } from "@/storage/player/playerGetByGroupAndTeam"
+
+import { Container, Form, HeaderList, NumberOfPlayers } from "./styles"
 
 type RouteParams = {
   group: string
@@ -21,7 +25,7 @@ type RouteParams = {
 
 export function Players() {
   const [team, setTeam] = useState("time a")
-  const [players, setPlayers] = useState([])
+  const [players, setPlayers] = useState<PlayerStorageDTO[]>([])
   const [newPlayerName, setNewPlayerName] = useState("")
 
   const route = useRoute()
@@ -50,6 +54,20 @@ export function Players() {
 
       Alert.alert("Novo jogador", "Não foi possível adicionar o jogador")
       console.log(error)
+    }
+  }
+
+  async function fetchPlayersByTeam() {
+    try {
+      const playersByTeam = await playerGetByGroupAndTeam(group, team)
+
+      setPlayers(playersByTeam)
+    } catch (error) {
+      console.log(error)
+      Alert.alert(
+        "Pessoas",
+        "Não foi possível carregar as pessoas do time selecionado"
+      )
     }
   }
 
