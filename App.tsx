@@ -6,8 +6,8 @@ import {
 import { StatusBar } from "react-native"
 import { ThemeProvider } from "styled-components/native"
 
-import themes from "@/theme"
-import { Players } from "@/screens/Players"
+import theme from "@/theme"
+import { Routes } from "@/routes"
 import { Loading } from "@/components/Loading"
 
 export default function App() {
@@ -17,13 +17,13 @@ export default function App() {
   })
 
   return (
-    <ThemeProvider theme={themes}>
+    <ThemeProvider theme={theme}>
       <StatusBar
         barStyle={"light-content"}
         backgroundColor="transparent"
         translucent
       />
-      {fontsLoaded ? <Players /> : <Loading />}
+      {fontsLoaded ? <Routes /> : <Loading />}
     </ThemeProvider>
   )
 }
