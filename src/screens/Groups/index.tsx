@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
 import { FlatList } from "react-native"
-import { useNavigation } from "@react-navigation/native"
+import { useCallback, useState } from "react"
+import { useNavigation, useFocusEffect } from "@react-navigation/native"
 
 import { groupsGetAll } from "@/storage/group/groupsGetAll"
 
@@ -30,9 +30,15 @@ export function Groups() {
     }
   }
 
-  useEffect(() => {
-    fetchGroups()
-  }, [])
+  useFocusEffect(
+    useCallback(() => {
+      try {
+        fetchGroups()
+      } catch (error) {
+        console.log(error)
+      }
+    }, [])
+  )
 
   return (
     <Container>
