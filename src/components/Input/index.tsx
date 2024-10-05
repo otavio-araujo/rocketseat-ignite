@@ -3,10 +3,9 @@ import { useTheme } from "styled-components/native"
 
 import { Container } from "./styles"
 
-type Props = TextInput &
-  TextInputProps & {
-    inputRef?: React.RefObject<TextInput>
-  }
+type Props = TextInputProps & {
+  inputRef?: React.RefObject<TextInput>
+}
 
 export function Input({ inputRef, ...rest }: Props) {
   const { COLORS } = useTheme()
